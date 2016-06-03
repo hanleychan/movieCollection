@@ -175,7 +175,7 @@ class MovieController extends Controller
 
 		// Fetch movie
 		$movie = Movie::where('moviedb_id', (int)$id)->first();
-		// Add movie to movies table if it doesn't exist
+		// Add movie to movies table if it does not exist
 		if(empty($movie)) {
 			$movie = Movie::create(['title' => $movieInfo['title'], 
 									'release' => $movieInfo['release_date'],
@@ -241,11 +241,10 @@ class MovieController extends Controller
 		if(empty($tvShowInfo = $this->movies->getTVShow((int)$id))) {
 			return "NO SUCH TV SHOW";
 		}
-
-
+		
 		// Fetch TV show
 		$tvShow = TVShow::where('moviedb_id', (int)$id)->first();
-		// Add movie to movies table if it doesn't exist
+		// Add movie to movies table if it does not exist
 		if(empty($tvShow)) {
 			$tvShow = TVShow::create(['title' => $tvShowInfo['name'], 
 									'release' => $tvShowInfo['first_air_date'],
