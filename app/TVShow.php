@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TVShow extends Model
 {
 	protected $table = 'tvShows';
-	protected $fillable = array('title', 'release', 'moviedb_id');
+	protected $fillable = array('title', 'release', 'moviedb_id', 'poster');
 	protected $primaryKey = 'moviedb_id';
 
 	public function tvCollections()

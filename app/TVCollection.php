@@ -19,6 +19,6 @@ class TVCollection extends Model
 
 	public function tvShow()
 	{
-		return $this->belongsTo(TVShow::class);
+		return $this->belongsTo(TVShow::class, 'tvShow_id');
 	}
 }

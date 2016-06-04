@@ -36,24 +36,20 @@ class MovieController extends Controller
 
 	public function movieCategory(Request $request, MovieCategory $movieCategory)
 	{
-		$itemsList = $movieCategory->load('movieCollections');
+		$type = 'movie';
+		$category = $movieCategory;
+		$items = $movieCategory->movieCollections()->join('movies', 'movie_collections.movie_id', '=', 'movies.moviedb_id')->orderBy('title', 'asc')->paginate(20);
 
-		// fetch movie info
-		foreach($itemsList->movieCollections as $movie) {
-			$movieInfo = $this->movies->getMovie($movie->moviedb_id);
-			$movie->title = $movieInfo['title'];
-			$movie->release_date = $movieInfo['release_date'];
-		}
-
-		return view('movies.collectionItems', compact('itemsList'));
+		return view('movies.collectionItems', compact('type', 'category', 'items'));
 
 	}
 
 	public function tvCategory(Request $request, TVCategory $tvCategory) 
 	{
-
-		$itemsList = $tvCategory->load('tvCollections');
-		return view('movies.collectionItems', compact('itemsList'));
+		$type = 'tv';
+		$category = $tvCategory;
+		$items = $category->tvCollections()->join('tvShows', 'tv_collections.tvShow_id', '=', 'tvshows.moviedb_id')->orderBy('title', 'asc')->paginate(20);
+		return view('movies.collectionItems', compact('type', 'category', 'items'));
 	}
 
 	public function newMovieCategory(Request $request)
@@ -179,7 +175,31 @@ class MovieController extends Controller
 		if(empty($movie)) {
 			$movie = Movie::create(['title' => $movieInfo['title'], 
 									'release' => $movieInfo['release_date'],
-									'moviedb_id' => $movieInfo['id']]);
+									'moviedb_id' => $movieInfo['id'],
+									'poster' => $movieInfo['poster_path']
+			]);
+		} else {
+			// Update movie entry if changed	
+			$update = false;
+
+			if($movie->title !== $movieInfo['title']) {
+				$update = true;
+				$movie->title = $movieInfo['title'];
+			}
+
+			if($movie->release !== $movieInfo['release_date']) {
+				$update = true;
+				$movie->release = $movieInfo['release_date'];
+			}
+
+			if($movie->poster !== $movieInfo['poster_path']) {
+				$update = true;
+				$movie->poster = $movieInfo['poster_path'];
+			}
+
+			if($update) {
+				$movie->save();
+			}
 		}
 
 		// Update user movie collections
@@ -248,7 +268,8 @@ class MovieController extends Controller
 		if(empty($tvShow)) {
 			$tvShow = TVShow::create(['title' => $tvShowInfo['name'], 
 									'release' => $tvShowInfo['first_air_date'],
-									'moviedb_id' => $tvShowInfo['id']]);
+									'moviedb_id' => $tvShowInfo['id'],
+									'poster' => $tvShowInfo['poster_path']]);
 		}
 
 		// Update tv show collections 
