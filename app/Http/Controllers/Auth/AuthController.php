@@ -93,7 +93,11 @@ class AuthController extends Controller
 
         // Create default collection categories for user
         $request->user()->MovieCategories()->create(array('name'=>'DVD'));
+        $request->user()->MovieCategories()->create(array('name'=>'Blu-ray'));
+        $request->user()->MovieCategories()->create(array('name'=>'Digital'));
         $request->user()->TVCategories()->create(array('name'=>'DVD'));
+        $request->user()->TVCategories()->create(array('name'=>'Blu-Ray'));
+        $request->user()->TVCategories()->create(array('name'=>'Digital'));
 
         return redirect($this->redirectPath());
     }

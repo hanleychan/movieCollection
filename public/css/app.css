@@ -7,4 +7,19 @@ body {
 p#prevPageLink {
   margin-top: 20px; }
 
+input.searchInput {
+  margin-left: 10px; }
+
+ul.categoriesList {
+  list-style: none;
+  padding: 0 0 0 2%;
+  margin: 4% 0 0 0; }
+  ul.categoriesList li {
+    height: 40px;
+    word-wrap: break-word; }
+
+@media screen and (max-width: 768px) {
+  input.newCategoryInput {
+    margin-bottom: 5px; } }
+
 /*# sourceMappingURL=app.css.map */

@@ -15,53 +15,79 @@
 		@endif
 
 		<h3>Movies:</h3>
-		<form action="{{ url("movieCategory/new") }}" method="post">
+		<form class="form-inline" action="{{ url("movieCategory/new") }}" method="post">
 			{{ csrf_field() }}
-			<label for="name">New Category: </label>
-			<input type="text" id="name" name="movieCategoryName" maxlength="20" value="{{ old('movieCategoryName') }}">
-			<button type="submit">Add</button>
+			<div class="form-group">
+				<label for="movieCategoryName">New Category: </label>
+				<input type="text" class="form-control newCategoryInput" id="movieCategoryName" name="movieCategoryName" maxlength="20" value="{{ old('movieCategoryName') }}">
+				<button type="submit" class="btn btn-primary">Add</button>
+			</div>
 		</form>
-		@if(!empty($movieCategories))
-			<ul>
-				@foreach($movieCategories as $movieCategory)
-					<li>
-						<form class="deleteCategoryForm" action="{{ url("movieCategory/{$movieCategory->id}/delete") }}" method="post">
-							{{ method_field('delete') }}
-							{{ csrf_field() }}
 
-							<a href="{{ url("movieCategory/{$movieCategory->id}") }}">
-								{{ $movieCategory->name }} ({{ count($movieCategory->movieCollections) }})
-							</a>
+		<div class="row">
+			<div class="col-xs-12 col-sm-8 col-md-6">
+				@if(!empty($movieCategories))
+					<ul class="categoriesList">
+					@foreach($movieCategories as $movieCategory)
+						<li>
+							<form action="{{ url("movieCategory/{$movieCategory->id}/delete") }}" method="post">
+								{{ method_field('delete') }}
+								{{ csrf_field() }}
 
-							<button class="deleteCategory" type="submit">Delete</button>
-						</form>
-					</li>
-				@endforeach
-			</ul>
-		@endif
+								<div class="row">
+									<div class="col-xs-10">
+										<a href="{{ url("movieCategory/{$movieCategory->id}") }}">
+											{{ $movieCategory->name }} ({{ count($movieCategory->movieCollections) }})
+										</a>
+									</div>
+									<div class="col-xs-2">
+										<button class="deleteCategory btn btn-info" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+									</div>
+								</div>
+							</form>
+						</li>
+					@endforeach
+					</ul>
+				@endif
+			</div>
+		</div>
 		<h3>TV Shows:</h3>
-		<form action="{{ url("tvCategory/new") }}" method="post">
+		<form class="form-inline" action="{{ url("tvCategory/new") }}" method="post">
 			{{ csrf_field() }}
-			<label for="name">New Category: </label>
-			<input type="text" id="name" name="tvCategoryName" maxlength="20" value="{{ old('tvCategoryName') }}">
-			<button type="submit">Add</button>
+			<div class="form-group">
+				<label for="tvCategoryName">New Category: </label>
+				<input type="text" class="form-control newCategoryInput" id="tvCategoryName" name="tvCategoryName" maxlength="20" value="{{ old('tvCategoryName') }}">
+				<button type="submit" class="btn btn-primary">Add</button>
+			</div>
 		</form>
-		@if(!empty($tvCategories))
-			<ul>
-				@foreach($tvCategories as $tvCategory)
-					<li>
-						<form class="deleteCategoryForm" action=" {{ url("tvCategory/{$tvCategory->id}/delete") }}" method="post">
-							{{ method_field('delete') }}
-							{{ csrf_field() }}
-							<a href="{{ url("tvCategory/{$tvCategory->id}") }}">
-								{{ $tvCategory->name }} ({{ count($tvCategory->tvCollections) }})
-							</a>
-							<button class="deleteCategory" type="submit">Delete</button>
-						</form>
-					</li>
-				@endforeach
-			</ul>
-		@endif
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-8 col-md-6">
+				@if(!empty($tvCategories))
+					<ul class="categoriesList">
+						@foreach($tvCategories as $tvCategory)
+							<li>
+								<form action=" {{ url("tvCategory/{$tvCategory->id}/delete") }}" method="post">
+									{{ method_field('delete') }}
+									{{ csrf_field() }}
+
+									<div class="row">
+										<div class="col-xs-10">
+											<a href="{{ url("tvCategory/{$tvCategory->id}") }}">
+												{{ $tvCategory->name }} ({{ count($tvCategory->tvCollections) }})
+											</a>
+										</div>
+										<div class="col-xs-2">
+											<button class="deleteCategory btn btn-info" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+										</div>
+									</div>
+								</form>
+							</li>
+						@endforeach
+					</ul>
+				@endif
+			</div>
+		</div>
 	</div>
 
 <div id="dialog-confirm" title="Confirm Delete Category">
@@ -99,7 +125,7 @@
 			    modal: true,
 			    buttons: {
 				    "Yes": function() {
-				    	deleteCategory.parent().submit();
+				    	deleteCategory.parentsUntil('form').parent().submit();
 				    },
 			        No: function() {
 				        $( this ).dialog( "close" );

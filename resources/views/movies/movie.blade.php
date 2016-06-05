@@ -15,10 +15,6 @@
 	@if (count($errors) > 0)
 	    <!-- Form Error List -->
 	    <div class="alert alert-danger">
-	        <strong>Whoops! Something went wrong!</strong>
-
-	        <br><br>
-
 	        <ul>
 	            @foreach ($errors->all() as $error)
 	                <li>{{ $error }}</li>
@@ -77,7 +73,7 @@
 				@endforeach	
 
 				<label for="note">Notes:</label><br>
-				<textarea id="note" name="note" maxlength="255">{{ (old('note') != "") ? old('note') : ((!empty($note)) ? $note->note : '') }}</textarea><br>
+				<textarea class="form-control" rows="5" id="note" name="note" maxlength="255">{{ (old('note') != "") ? old('note') : ((!empty($note)) ? $note->note : '') }}</textarea><br>
 				<button type="submit">Update</button>
 			</form>
 

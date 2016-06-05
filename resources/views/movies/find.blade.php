@@ -3,14 +3,16 @@
 	<div class="container">
         <div class="row">
     		<h1>Find Movie</h1>
-    		<form action="/find" method="get">
+    		<form class="form-inline" action="/find" method="get">
                 <label for="movie">Movie</label>
                 <input type="radio" name="type" value="movie" id="movie"@if ($type==='movie' || empty($type)){{ ' checked' }}@endif required>
                 <label for="tv">TV Show</label>
                 <input type="radio" name="type" value="tv" id="tv"@if ($type==='tv'){{ ' checked' }}@endif required><br>
-    			<label for="search">Search:</label>
-    			<input type="text" id="search" name="search" value="{{ $search }}">
-    			<button type="submit">Go</button>
+                <div class="form-group">
+        			<label for="search">Search:</label>
+        			<input type="text" class="form-control searchInput" id="search" name="search" value="{{ $search }}">
+                </div>
+    			<button type="submit" class="btn btn-primary">Go</button>
     		</form>
 
             <h3>Results:</h3>
