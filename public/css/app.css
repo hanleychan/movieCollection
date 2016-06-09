@@ -1,6 +1,9 @@
 body {
   min-width: 320px; }
 
+h1 {
+  word-wrap: break-word; }
+
 .list-group-item {
   padding: 0.5% 2%; }
 
@@ -17,6 +20,18 @@ ul.categoriesList {
   ul.categoriesList li {
     height: 40px;
     word-wrap: break-word; }
+
+a.editMode {
+  display: none; }
+
+input.editCategory {
+  display: none; }
+
+input.editMode {
+  display: inline; }
+
+form.deleteCategoryForm {
+  display: inline; }
 
 @media screen and (max-width: 768px) {
   input.newCategoryInput {

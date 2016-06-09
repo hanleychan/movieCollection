@@ -23,7 +23,10 @@ Route::get('tv/{id}', 'MovieController@tvShow');
 Route::post('movie/{id}/updateMovieCollection', 'MovieController@updateMovieCollection');
 Route::post('tv/{id}/updateTVCollection', 'MovieController@updateTVCollection');
 
+
 Route::post('movieCategory/new', 'MovieController@newMovieCategory');
 Route::post('tvCategory/new', 'MovieController@newTVCategory');
+Route::patch('movieCategory/{id}/edit', 'MovieController@editMovieCategory');
+Route::patch('tvCategory/{id}/edit', 'MovieController@editTVCategory');
 Route::delete('movieCategory/{id}/delete', 'MovieController@deleteMovieCategory');
 Route::delete('tvCategory/{id}/delete', 'MovieController@deleteTVCategory');

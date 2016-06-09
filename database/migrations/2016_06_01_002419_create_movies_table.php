@@ -16,6 +16,7 @@ class CreateMoviesTable extends Migration
             $table->integer('moviedb_id')->unsigned()->primary();
             $table->string('title');
             $table->date('release')->nullable();
+            $table->string('poster')->nullable();
             $table->timestamps();
         });
     }

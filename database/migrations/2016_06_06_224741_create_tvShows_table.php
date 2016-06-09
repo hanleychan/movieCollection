@@ -13,9 +13,10 @@ class CreateTvShowsTable extends Migration
     public function up()
     {
         Schema::create('tvShows', function (Blueprint $table) {
-            $table->integer('moviedb_id')->unsigned()->primary;
+            $table->integer('moviedb_id')->unsigned()->primary();
             $table->string('title');
             $table->date('release')->nullable();
+            $table->string('poster')->nullable();
             $table->timestamps();
         });
     }

@@ -28,8 +28,8 @@ class MovieController extends Controller
 	public function myCollection(Request $request)
 	{
 		// Fetch user categories
-		$movieCategories = $request->user()->movieCategories->load('movieCollections');
-		$tvCategories = $request->user()->tvCategories->load('tvCollections');
+		$movieCategories = $request->user()->movieCategories()->with('movieCollections')->orderBy('name', 'asc')->get()->groupBy('name');
+		$tvCategories = $request->user()->tvCategories()->with('tvCollections')->orderBy('name', 'asc')->get()->groupBy('name');
 
 		return view('movies.myCollection', compact('movieCategories', 'tvCategories'));
 	}
@@ -48,7 +48,7 @@ class MovieController extends Controller
 	{
 		$type = 'tv';
 		$category = $tvCategory;
-		$items = $category->tvCollections()->join('tvShows', 'tv_collections.tvShow_id', '=', 'tvshows.moviedb_id')->orderBy('title', 'asc')->paginate(20);
+		$items = $category->tvCollections()->join('tvShows', 'tv_collections.tvShow_id', '=', 'tvShows.moviedb_id')->orderBy('title', 'asc')->paginate(20);
 		return view('movies.collectionItems', compact('type', 'category', 'items'));
 	}
 
@@ -74,6 +74,40 @@ class MovieController extends Controller
 		return back();
 	}
 
+	public function editMovieCategory(Request $request, $id)
+	{
+		$this->validate($request, [
+			'newName' => "required|max:20|unique:movie_categories,name,{$id},id,user_id,{$request->user()->id}",
+		]);
+
+		$movieCategory = $request->user()->movieCategories->where('id', (int)$id)->first();
+		if(!empty($movieCategory)) {
+			$movieCategory->update(array('name' => $request->newName));
+			return json_encode(array('success' => true,
+									 'message' => 'Category has been successfully renamed')); 
+		} else {
+			return json_encode(array('success' => false,
+									 'message' => 'Error: There was a problem processing your request'));
+		}
+	}
+
+	public function editTVCategory(Request $request, $id)
+	{
+		$this->validate($request, [
+			'newName' => "required|max:20|unique:tv_categories,name,{$id},id,user_id,{$request->user()->id}",
+		]);
+
+		$tvCategory = $request->user()->tvCategories->where('id', (int)$id)->first();
+		if(!empty($tvCategory)) {
+			$tvCategory->update(array('name' => $request->newName));
+			return json_encode(array('success' => true,
+									 'message' => 'Category has been successfully renamed')); 
+		} else {
+			return json_encode(array('success' => false,
+									 'message' => 'Error: There was a problem processing your request'));
+		}
+	}
+
 	public function deleteMovieCategory(Request $request, $id)
 	{
 		// Fetch movie category
@@ -81,9 +115,12 @@ class MovieController extends Controller
 		if(!empty($movieCategory)) {
 			$movieCategory->delete();
 		} else {
-			return "movie category not found";
+			return json_encode(array('success' => false, 
+									 'message' => 'Error: There was a problem processing your request'));
 		}
-		return back();
+
+		return json_encode(array('success' => true,
+								 'message' => 'Category has been successfully deleted'));
 	}
 
 	public function deleteTVCategory(Request $request, $id) 
@@ -94,10 +131,11 @@ class MovieController extends Controller
 		if(!empty($tvCategory)) {
 			$tvCategory->delete();
 		} else {
-			return "tv category not found";
+			return json_encode(array('success' => false,
+									 'message' => 'Error: There was a problem processing your request'));
 		}
-
-		return back();
+		return json_encode(array('success' => true,
+								 'message' => 'Category has been successfully deleted'));
 	}
 
 	public function find(Request $request)
@@ -119,7 +157,6 @@ class MovieController extends Controller
 	public function movie(Request $request, $id)
 	{
 		$type = 'movie';
-
 		$result = $this->movies->getMovie((int)$id);
 
 		if(!empty($result)) {
@@ -127,9 +164,12 @@ class MovieController extends Controller
 			$note = $request->user()->movieNotes->where('movie_id', (int)$id)->first();
 
 			// fetch user movie collections 
-			$userCategories = $request->user()->movieCategories->load('movieCollections');
+			$userCategories = $request->user()->movieCategories()->orderBy('name', 'asc')->with(['movieCollections' => function($query) use ($id) {
+				$query->where('movie_id', (int)$id);
+			}])->get();
+
 			foreach($userCategories as $userCategory) {
-				if(!empty($userCategory->movieCollections->where('movie_id', (int)$id)->first())) {
+				if(!empty($userCategory->movieCollections->first())) {
 					$userCategory->inCollection = true;
 				} else {
 					$userCategory->inCollection = false;
@@ -142,7 +182,6 @@ class MovieController extends Controller
 	public function tvShow(Request $request, $id)
 	{
 		$type = 'tv';
-
 		$result = $this->movies->getTVShow((int)$id);
 
 		if(!empty($result)) {
@@ -150,9 +189,12 @@ class MovieController extends Controller
 			$note = $request->user()->tvNotes->where('tvShow_id', (int)$id)->first();	
 
 			// fetch user tv show collections
-			$userCategories = $request->user()->tvCategories->load('tvCollections');
+			$userCategories = $request->user()->tvCategories()->orderBy('name', 'asc')->with(['tvCollections' => function($query) use ($id) {
+				$query->where('tvShow_id', (int)$id);
+			}])->get();
+
 			foreach($userCategories as $userCategory) {
-				if(!empty($userCategory->tvCollections->where('tvShow_id', (int)$id)->first())) {
+				if(!empty($userCategory->tvCollections->first())) {
 					$userCategory->inCollection = true;
 				} else {
 					$userCategory->inCollection = false;

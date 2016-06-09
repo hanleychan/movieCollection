@@ -14,7 +14,7 @@ class CreateTvNotesTable extends Migration
     {
         Schema::create('tv_notes', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('tvShow_id')->unsigned()->index();
+            $table->integer('tvShow_id')->unsigned();
             $table->integer('user_id')->unsigned()->index();
             $table->text('note');
             $table->timestamps();

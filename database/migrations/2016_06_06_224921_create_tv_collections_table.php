@@ -18,7 +18,7 @@ class CreateTvCollectionsTable extends Migration
             $table->integer('tv_category_id')->unsigned()->index();
             $table->timestamps();
             $table->unique(array('tvShow_id', 'tv_category_id'));
-            $table->foreign('tvShow_id')->references('movidedb_id')->on('tvShows')->onDelete('cascade');
+            $table->foreign('tvShow_id')->references('moviedb_id')->on('tvShows')->onDelete('cascade');
             $table->foreign('tv_category_id')->references('id')->on('tv_categories')->onDelete('cascade');
         });
     }
