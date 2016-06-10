@@ -145,16 +145,18 @@ $('body').on("click", '.editCategory', function() {
 		});
 	} else {
 		$(this).children("span").toggleClass("glyphicon-edit").toggleClass("glyphicon-save");
-		$(this).parentsUntil("div").parent().prev().children("a").toggleClass("editMode").next("input").toggleClass("editMode").focus();
+		$(this).parentsUntil("div").parent().prev().children("a").toggleClass("editMode").next("input").toggleClass("editMode").focus().select();
 		$(this).toggleClass("saveCategory");
 	}
 });
 
 /**
- *	Save updated category name when the enter key is pressed
+ *	Save updated category name when the enter key is pressed or undo if escape key is pressed
  */
-$("input.editCategoryInput").keypress(function(e) {
+$("input.editCategoryInput").keydown(function(e) {
 	if(e.which === 13) {
 		$(this).parent().next().find("button.saveCategory").click();
+	} else if(e.keyCode === 27) {
+		$(this).val($(this).prev().find("span").html()).select();	
 	}
 });

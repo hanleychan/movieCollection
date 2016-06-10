@@ -53,7 +53,7 @@
 										<span class="categoryName">{{ $movieCategory->first()->name }}</span>
 										({{ $movieCategory->first()->movieCollections->count() }})
 									</a>
-									<input type="text" class="editCategoryInput" value="{{ $movieCategory->first()->name }}" maxlength="20">
+									<input type="text" class="form-control editCategoryInput" value="{{ $movieCategory->first()->name }}" maxlength="20">
 								</div>
 								<div class="col-xs-5 col-sm-4 col-md-3 pull-right">
 									<form class="deleteCategoryForm" action="{{ url("movieCategory/{$movieCategory->first()->id}/delete") }}" method="post">
@@ -95,7 +95,7 @@
 											<span class="categoryName">{{ $tvCategory->first()->name }}</span>
 											({{ $tvCategory->first()->tvCollections->count() }})
 										</a>
-										<input type="text" class="editCategoryInput" value="{{ $tvCategory->first()->name }}" maxlength="20">
+										<input type="text" class="form-control editCategoryInput" value="{{ $tvCategory->first()->name }}" maxlength="20">
 									</div>
 									<div class="col-xs-5 col-sm-4 col-md-3 pull-right">
 										<form class="deleteCategoryForm" action=" {{ url("tvCategory/{$tvCategory->first()->id}/delete") }}" method="post">
