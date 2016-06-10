@@ -68,6 +68,9 @@ $(".deleteCategory").on("click", function() {
     });
 });
 
+/**
+ * Update and save a category name when the edit or save button is clicked
+ */
 $('body').on("click", '.editCategory', function() {
 	var editCategory = $(this);
 
@@ -144,5 +147,14 @@ $('body').on("click", '.editCategory', function() {
 		$(this).children("span").toggleClass("glyphicon-edit").toggleClass("glyphicon-save");
 		$(this).parentsUntil("div").parent().prev().children("a").toggleClass("editMode").next("input").toggleClass("editMode").focus();
 		$(this).toggleClass("saveCategory");
+	}
+});
+
+/**
+ *	Save updated category name when the enter key is pressed
+ */
+$("input.editCategoryInput").keypress(function(e) {
+	if(e.which === 13) {
+		$(this).parent().next().find("button.saveCategory").click();
 	}
 });
