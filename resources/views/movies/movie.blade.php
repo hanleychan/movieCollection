@@ -1,17 +1,6 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
-	<div class="row">
-		<h1>
-			@if($type === 'movie')
-				{{ $result['title'] }}
-			@elseif($type === 'tv')
-				{{ $result['name'] }}
-			@endif
-		</h1>
-	</div>
-
-
 	@if (count($errors) > 0)
 	    <!-- Form Error List -->
 	    <div class="alert alert-danger">
@@ -21,8 +10,23 @@
 	            @endforeach
 	        </ul>
 	    </div>
+	@elseif ($message = Session::get('successMessage'))
+	    <div class="alert alert-success">
+	        <ul>
+	        	<li>{{ $message }}</li>
+	        </ul>
+	    </div>
 	@endif
 
+	<div class="row">
+		<h1>
+			@if($type === 'movie')
+				{{ $result['title'] }}
+			@elseif($type === 'tv')
+				{{ $result['name'] }}
+			@endif
+		</h1>
+	</div>
 
 	<div class="row">
 		<div class="col-sm-4">
@@ -67,6 +71,8 @@
 			<form action="/tv/{{ $result['id'] }}/updateTVCollection" method="post">
 			@endif
 				{{ csrf_field() }}
+				<input type="hidden" name="prevPage" value="">
+
 				@foreach($userCategories as $userCategory)
 					<input type="checkbox" id="{{ $userCategory->name }}" name="categories[]" value="{{ $userCategory->id }}"{{ $userCategory->inCollection ? ' checked' : '' }}>
 					<label for="{{ $userCategory->name }}">{{ $userCategory->name }}</label><br>

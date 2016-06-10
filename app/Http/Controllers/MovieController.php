@@ -58,6 +58,8 @@ class MovieController extends Controller
 			'movieCategoryName'=>"required|max:20|unique:movie_categories,name,NULL,id,user_id,{$request->user()->id}",
 		]);
 
+		session()->flash('successMessage', "New movie category has been successfully created.");
+
 		$request->user()->movieCategories()->create(array('name'=>trim($request->movieCategoryName)));
 
 		return back();
@@ -69,6 +71,8 @@ class MovieController extends Controller
 			'tvCategoryName'=>"required|max:20|unique:tv_categories,name,NULL,id,user_id,{$request->user()->id}",
 		]);
 
+		session()->flash('successMessage', "New TV show category has been successfully created.");
+
 		$request->user()->tvCategories()->create(array('name'=>trim($request->tvCategoryName)));
 
 		return back();
@@ -77,12 +81,12 @@ class MovieController extends Controller
 	public function editMovieCategory(Request $request, $id)
 	{
 		$this->validate($request, [
-			'newName' => "required|max:20|unique:movie_categories,name,{$id},id,user_id,{$request->user()->id}",
+			'movieCategoryName' => "required|max:20|unique:movie_categories,name,{$id},id,user_id,{$request->user()->id}",
 		]);
 
 		$movieCategory = $request->user()->movieCategories->where('id', (int)$id)->first();
 		if(!empty($movieCategory)) {
-			$movieCategory->update(array('name' => $request->newName));
+			$movieCategory->update(array('name' => $request->movieCategoryName));
 			return json_encode(array('success' => true,
 									 'message' => 'Category has been successfully renamed')); 
 		} else {
@@ -94,12 +98,12 @@ class MovieController extends Controller
 	public function editTVCategory(Request $request, $id)
 	{
 		$this->validate($request, [
-			'newName' => "required|max:20|unique:tv_categories,name,{$id},id,user_id,{$request->user()->id}",
+			'tvCategoryName' => "required|max:20|unique:tv_categories,name,{$id},id,user_id,{$request->user()->id}",
 		]);
 
 		$tvCategory = $request->user()->tvCategories->where('id', (int)$id)->first();
 		if(!empty($tvCategory)) {
-			$tvCategory->update(array('name' => $request->newName));
+			$tvCategory->update(array('name' => $request->tvCategoryName));
 			return json_encode(array('success' => true,
 									 'message' => 'Category has been successfully renamed')); 
 		} else {
@@ -213,6 +217,7 @@ class MovieController extends Controller
 
 		// Fetch movie
 		$movie = Movie::where('moviedb_id', (int)$id)->first();
+
 		// Add movie to movies table if it does not exist
 		if(empty($movie)) {
 			$movie = Movie::create(['title' => $movieInfo['title'], 
@@ -294,6 +299,8 @@ class MovieController extends Controller
 			}
 		}
 
+		session()->flash('successMessage', "Your movie collection has been updated.");
+
 		return back();
 	}
 
@@ -363,6 +370,8 @@ class MovieController extends Controller
 				$note->delete();
 			}
 		}
+
+		session()->flash('successMessage', "Your TV show collection has been updated.");
 
 		return back();
 	}

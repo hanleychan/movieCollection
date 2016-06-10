@@ -36,7 +36,7 @@ a.editMode {
 	display: none;
 }
 
-input.editCategory {
+input.editCategoryInput {
 	display: none;
 }
 
@@ -48,8 +48,24 @@ form.deleteCategoryForm {
 	display: inline;
 }
 
+div.alert {
+	ul {
+		list-style-type: none;
+		padding: 0;
+	}
+
+	position: fixed;
+	left: 50%;
+	text-align: center;
+	z-index:100;
+}
+
 @media screen and (max-width: 768px){
 	input.newCategoryInput {
 		margin-bottom: 5px;
+	}
+
+	div.alert {
+		left:0;
 	}
 }
