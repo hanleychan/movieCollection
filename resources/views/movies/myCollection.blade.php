@@ -12,7 +12,17 @@
 		            @endforeach
 		        </ul>
 		    </div>
-		@elseif ($message = Session::get('successMessage'))
+		@endif
+
+		@if ($message = Session::get('errorMessage'))
+		    <div class="alert alert-danger">
+		        <ul>
+	                <li>{{ $message }}</li>
+		        </ul>
+		    </div>
+		@endif
+
+		@if ($message = Session::get('successMessage'))
 		    <div class="alert alert-success">
 		        <ul>
 		        	<li>{{ $message }}</li>

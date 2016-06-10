@@ -8,6 +8,9 @@ class MovieRepository
 {
     protected $client;
 
+    /**
+     * Create a new MovieRepository instance
+     */
     public function __construct()
     {
         $token = new \Tmdb\ApiToken('65b0462213517b3598c24abb7ce5ac74');
@@ -19,20 +22,7 @@ class MovieRepository
     }
 
     /**
-     * Get all movies for a given user
-     *
-     * @param User $user
-     * @return Collection
-     */
-    public function forUser(User $user)
-    {
-    }
-
-    /**
      * Get a movie for the given id
-     *
-     * @param Integer $id 
-     * @return mixed
      */
     public function getMovie($id)
     {
@@ -47,9 +37,6 @@ class MovieRepository
 
     /**
      * Get a tv show for the given id
-     *
-     * @param Integer $id 
-     * @return mixed
      */
     public function getTVShow($id)
     {
@@ -60,16 +47,10 @@ class MovieRepository
         }
 
         return $tvShow;
-
     }
 
     /**
      * Get all movies or tv shows for a given search term
-     *
-     * @param String $searchTerm
-     * @param Integer $page
-     * @param String $type
-     * @return mixed
      */
     public function searchMovies($searchTerm = "", $page = 1, $type="movie")
     {

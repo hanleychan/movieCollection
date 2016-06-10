@@ -19,12 +19,18 @@ class MovieController extends Controller
 {
     protected $movies;
 
+    /**
+     * Create a new MovieController instance
+     */
 	public function __construct(MovieRepository $movies)
 	{
 		$this->middleware('auth');
         $this->movies = $movies;
 	}
 
+	/**
+	 * Show user categories
+	 */
 	public function myCollection(Request $request)
 	{
 		// Fetch user categories
@@ -34,6 +40,9 @@ class MovieController extends Controller
 		return view('movies.myCollection', compact('movieCategories', 'tvCategories'));
 	}
 
+	/**
+	 * Show all movies from a movie category
+	 */
 	public function movieCategory(Request $request, MovieCategory $movieCategory)
 	{
 		$type = 'movie';
@@ -44,6 +53,9 @@ class MovieController extends Controller
 
 	}
 
+	/**
+	 * Show all tv shows from a tv show category
+	 */
 	public function tvCategory(Request $request, TVCategory $tvCategory) 
 	{
 		$type = 'tv';
@@ -52,6 +64,9 @@ class MovieController extends Controller
 		return view('movies.collectionItems', compact('type', 'category', 'items'));
 	}
 
+	/**
+	 * Process adding a new movie category
+	 */
 	public function newMovieCategory(Request $request)
 	{
 		$this->validate($request, [
@@ -65,6 +80,9 @@ class MovieController extends Controller
 		return back();
 	}
 
+	/**
+	 * Process adding a new tv show category
+	 */
 	public function newTVCategory(Request $request)
 	{
 		$this->validate($request, [
@@ -78,6 +96,9 @@ class MovieController extends Controller
 		return back();
 	}
 
+	/**
+	 *	Process updating a movie category name
+	 */
 	public function editMovieCategory(Request $request, $id)
 	{
 		$this->validate($request, [
@@ -95,6 +116,9 @@ class MovieController extends Controller
 		}
 	}
 
+	/**
+	 * Process updating a tv category name
+	 */
 	public function editTVCategory(Request $request, $id)
 	{
 		$this->validate($request, [
@@ -112,6 +136,9 @@ class MovieController extends Controller
 		}
 	}
 
+	/**
+	 * Process deleting a movie category
+	 */
 	public function deleteMovieCategory(Request $request, $id)
 	{
 		// Fetch movie category
@@ -127,6 +154,9 @@ class MovieController extends Controller
 								 'message' => 'Category has been successfully deleted'));
 	}
 
+	/**
+	 * Process deleting a tv show category
+	 */
 	public function deleteTVCategory(Request $request, $id) 
 	{
 		// Fetch tv show category
@@ -142,6 +172,9 @@ class MovieController extends Controller
 								 'message' => 'Category has been successfully deleted'));
 	}
 
+	/**
+	 * Show all movies or tv show by a given search term 
+	 */
 	public function find(Request $request)
 	{
 		$search = trim($request->search);
@@ -158,6 +191,9 @@ class MovieController extends Controller
 		return view('movies.find', compact('results', 'search', 'type', 'page', 'numPages'));
 	}
 
+	/**
+	 * Show a single movie
+	 */
 	public function movie(Request $request, $id)
 	{
 		$type = 'movie';
@@ -189,12 +225,15 @@ class MovieController extends Controller
 			}
 		} else {
 			// Return to homepage if movie doesn't exist
-			return redirect(url("/"));
+			return redirect(url("/myCollection"))->with('errorMessage', 'Movie does not exist');
 		}
 
 		return view('movies.movie', compact('result', 'type', 'note', 'userCategories', 'prevPage'));
 	}
 
+	/**
+	 * Show a single tv show
+	 */
 	public function tvShow(Request $request, $id)
 	{
 		$type = 'tv';
@@ -226,12 +265,15 @@ class MovieController extends Controller
 			}
 		} else {
 			// Redirect to homepage if movie doesn't exist
-			return redirect(url("/"));
+			return redirect(url("/myCollection"))->with('errorMessage', 'TV Show does not exist');
 		}
 
 		return view('movies.movie', compact('result', 'type', 'note', 'userCategories', 'prevPage'));
 	}
 
+	/**
+	 * Update movie collection and notes information
+	 */
 	public function updateMovieCollection(Request $request, $id)
 	{
 		// Update previous page
@@ -240,7 +282,7 @@ class MovieController extends Controller
 		// Check if movie exists
 		if(empty($movieInfo = $this->movies->getMovie((int)$id))) {
 			// Return to homepage if movie doesn't exist
-			return redirect(url("/"));
+			return redirect(url("/myCollection"))->with('errorMessage', 'Movie does not exist');
 		}
 
 		// Fetch movie
@@ -332,6 +374,9 @@ class MovieController extends Controller
 		return back();
 	}
 
+	/**
+	 * Update tv show collection and notes information
+	 */
 	public function updateTVCollection(Request $request, $id) 
 	{
 		// Update previous page
@@ -340,7 +385,7 @@ class MovieController extends Controller
 		// Check if movie exists
 		if(empty($tvShowInfo = $this->movies->getTVShow((int)$id))) {	
 			// Return to homepage if movie doesn't exist
-			return redirect(url("/"));
+			return redirect(url("/myCollection"))->with('errorMessage', 'TV show does not exist');
 		}
 		
 		// Fetch TV show
