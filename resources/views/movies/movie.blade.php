@@ -3,7 +3,7 @@
 <div class="container">
 	@if (count($errors) > 0)
 	    <!-- Form Error List -->
-	    <div class="alert alert-danger">
+	    <div class="alert alert-danger alertDismiss">
 	        <ul>
 	            @foreach ($errors->all() as $error)
 	                <li>{{ $error }}</li>
@@ -11,7 +11,7 @@
 	        </ul>
 	    </div>
 	@elseif ($message = Session::get('successMessage'))
-	    <div class="alert alert-success">
+	    <div class="alert alert-success alertDismiss">
 	        <ul>
 	        	<li>{{ $message }}</li>
 	        </ul>

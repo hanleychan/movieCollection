@@ -7,7 +7,7 @@ $(".deleteCategory").on("click", function() {
 	var warningMessage = $("<p></p>");
 
 	// Remove previous alert messages
-	$(this).parentsUntil("div.container").parent().children("div.alert").remove();
+	$(this).parentsUntil("div.container").parent().children("div.alertDismiss").remove();
 
 	warningMessage.html("Warning: This category will be permanently deleted and cannot be recovered.<br><br>Are you sure?");
 
@@ -37,7 +37,7 @@ $(".deleteCategory").on("click", function() {
 			    			_method: 'delete'
 			    		},
 			    		success: function(data) {
-							var $successDiv = $('<div class="alert alert-success"></div>');
+							var $successDiv = $('<div class="alert alert-success alertDismiss"></div>');
 							var $successList = $("<ul></ul");
 							if(type === 'movie') {
 								var message = "The movie category has been successfully deleted";
@@ -95,7 +95,7 @@ $('body').on("click", '.editCategory', function() {
 			},
 			success: function(data) {
 				var message = JSON.parse(data)['message'];
-				var $successDiv = $('<div class="alert alert-success"></div>');
+				var $successDiv = $('<div class="alert alert-success alertDismiss"></div>');
 				var $successList = $("<ul></ul");
 
 				$successList.append("<li>" + message + "</li>");
@@ -123,7 +123,7 @@ $('body').on("click", '.editCategory', function() {
 					var messages = data['tvCategoryName'];
 				}
 
-				var $errorsDiv = $('<div class="alert alert-danger"></div>');
+				var $errorsDiv = $('<div class="alert alert-danger alertDismiss"></div>');
 				var $errorsList = $("<ul></ul>");
 
 				for(var ii = 0; ii < messages.length; ii++) {

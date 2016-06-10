@@ -33,19 +33,19 @@ input.editMode {
 form.deleteCategoryForm {
   display: inline; }
 
-div.alert {
+div.alertDismiss {
   position: fixed;
   left: 50%;
   text-align: center;
   z-index: 100; }
-  div.alert ul {
+  div.alertDismiss ul {
     list-style-type: none;
     padding: 0; }
 
 @media screen and (max-width: 768px) {
   input.newCategoryInput {
     margin-bottom: 5px; }
-  div.alert {
+  div.alertDismiss {
     left: 0; } }
 
 /*# sourceMappingURL=app.css.map */
