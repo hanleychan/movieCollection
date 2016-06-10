@@ -94,9 +94,15 @@
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            statusCode: {
+                401: function () {
+                    window.location.replace("/login");
+                }
             }
+
         }); 
-        
+
         $(document).ready(function () {
             $("div.alert").delay(500).fadeIn('normal', function() {
                 $(this).delay(2500).fadeOut();
