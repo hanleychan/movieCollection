@@ -112,19 +112,12 @@
 @endsection
 
 @section('scripts')
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
 <script>
 	$(document).ready(function() {
 		$("button.deleteCategory").attr("type", "button");
 	});
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    }); 
 
 	$(".deleteCategory").on("click", function() {
 		var deleteCategory = $(this);

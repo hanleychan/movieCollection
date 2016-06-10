@@ -71,7 +71,7 @@
 			<form action="/tv/{{ $result['id'] }}/updateTVCollection" method="post">
 			@endif
 				{{ csrf_field() }}
-				<input type="hidden" name="prevPage" value="">
+				<input type="hidden" name="prevPage" value="{{ $prevPage }}">
 
 				@foreach($userCategories as $userCategory)
 					<input type="checkbox" id="{{ $userCategory->name }}" name="categories[]" value="{{ $userCategory->id }}"{{ $userCategory->inCollection ? ' checked' : '' }}>
@@ -86,6 +86,6 @@
 		</div>
 	</div>
 
-	<p id="prevPageLink"><a href="{{ URL::previous() }}">Return to previous page</a></p>
+	<p id="prevPageLink"><a href="{{ $prevPage }}">Return to previous page</a></p>
 </div>
 @endsection

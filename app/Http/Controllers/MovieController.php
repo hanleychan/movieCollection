@@ -155,13 +155,21 @@ class MovieController extends Controller
             $results = null;
         }
 
-		return view('movies.find', compact('results', 'search', 'type', 'numPages'));
+		return view('movies.find', compact('results', 'search', 'type', 'page', 'numPages'));
 	}
 
 	public function movie(Request $request, $id)
 	{
 		$type = 'movie';
 		$result = $this->movies->getMovie((int)$id);
+
+		// Set previous page url
+		if(\URL::current() !== \URL::previous()) {
+			$request->session()->put('prevPage', \URL::previous());
+			$prevPage = \URL::previous();
+		} else {
+			$prevPage = $request->session()->pull('prevPage');
+		}
 
 		if(!empty($result)) {
 			// fetch user movie note
@@ -179,14 +187,26 @@ class MovieController extends Controller
 					$userCategory->inCollection = false;
 				}
 			}
+		} else {
+			// Return to homepage if movie doesn't exist
+			return redirect(url("/"));
 		}
-		return view('movies.movie', compact('result', 'type', 'note', 'userCategories'));
+
+		return view('movies.movie', compact('result', 'type', 'note', 'userCategories', 'prevPage'));
 	}
 
 	public function tvShow(Request $request, $id)
 	{
 		$type = 'tv';
 		$result = $this->movies->getTVShow((int)$id);
+
+		// Set previous page url
+		if(\URL::current() !== \URL::previous()) {
+			$request->session()->put('prevPage', \URL::previous());
+			$prevPage = \URL::previous();
+		} else {
+			$prevPage = $request->session()->pull('prevPage');
+		}
 
 		if(!empty($result)) {
 			// fetch tv show note
@@ -204,15 +224,23 @@ class MovieController extends Controller
 					$userCategory->inCollection = false;
 				}
 			}
+		} else {
+			// Redirect to homepage if movie doesn't exist
+			return redirect(url("/"));
 		}
-		return view('movies.movie', compact('result', 'type', 'note', 'userCategories'));
+
+		return view('movies.movie', compact('result', 'type', 'note', 'userCategories', 'prevPage'));
 	}
 
 	public function updateMovieCollection(Request $request, $id)
 	{
+		// Update previous page
+		$request->session()->put('prevPage', $request->prevPage);	
+
 		// Check if movie exists
 		if(empty($movieInfo = $this->movies->getMovie((int)$id))) {
-			return "NO SUCH MOVIE";
+			// Return to homepage if movie doesn't exist
+			return redirect(url("/"));
 		}
 
 		// Fetch movie
@@ -306,9 +334,13 @@ class MovieController extends Controller
 
 	public function updateTVCollection(Request $request, $id) 
 	{
+		// Update previous page
+		$request->session()->put('prevPage', $request->prevPage);	
+
 		// Check if movie exists
-		if(empty($tvShowInfo = $this->movies->getTVShow((int)$id))) {
-			return "NO SUCH TV SHOW";
+		if(empty($tvShowInfo = $this->movies->getTVShow((int)$id))) {	
+			// Return to homepage if movie doesn't exist
+			return redirect(url("/"));
 		}
 		
 		// Fetch TV show
