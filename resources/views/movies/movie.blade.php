@@ -63,25 +63,28 @@
 			@else
 				<p>Not available</p>
 			@endif
+			<div class="panel panel-default">
+			    <div class="panel-heading">Update Collection:</div>
+			    <div class="panel-body">
+					@if ($type === 'movie' || $type !== 'tv')
+					<form action="/movie/{{ $result['id'] }}/updateMovieCollection" method="post">
+					@elseif ($type ==='tv')
+					<form action="/tv/{{ $result['id'] }}/updateTVCollection" method="post">
+					@endif
+						{{ csrf_field() }}
+						<input type="hidden" name="prevPage" value="{{ $prevPage }}">
 
-			<h4>Update Collection:</h4>
-			@if ($type === 'movie' || $type !== 'tv')
-			<form action="/movie/{{ $result['id'] }}/updateMovieCollection" method="post">
-			@elseif ($type ==='tv')
-			<form action="/tv/{{ $result['id'] }}/updateTVCollection" method="post">
-			@endif
-				{{ csrf_field() }}
-				<input type="hidden" name="prevPage" value="{{ $prevPage }}">
+						@foreach($userCategories as $userCategory)
+							<input type="checkbox" id="{{ $userCategory->name }}" name="categories[]" value="{{ $userCategory->id }}"{{ $userCategory->inCollection ? ' checked' : '' }}>
+							<label for="{{ $userCategory->name }}">{{ $userCategory->name }}</label><br>
+						@endforeach	
 
-				@foreach($userCategories as $userCategory)
-					<input type="checkbox" id="{{ $userCategory->name }}" name="categories[]" value="{{ $userCategory->id }}"{{ $userCategory->inCollection ? ' checked' : '' }}>
-					<label for="{{ $userCategory->name }}">{{ $userCategory->name }}</label><br>
-				@endforeach	
-
-				<label for="note">Notes:</label><br>
-				<textarea class="form-control" rows="5" id="note" name="note" maxlength="255">{{ (old('note') != "") ? old('note') : ((!empty($note)) ? $note->note : '') }}</textarea><br>
-				<button type="submit">Update</button>
-			</form>
+						<label for="note">Notes:</label><br>
+						<textarea class="form-control" rows="5" id="note" name="note" maxlength="255">{{ (old('note') != "") ? old('note') : ((!empty($note)) ? $note->note : '') }}</textarea><br>
+						<button type="submit" class="btn btn-primary">Update</button>
+					</form>
+				</div>
+			</div>
 
 		</div>
 	</div>

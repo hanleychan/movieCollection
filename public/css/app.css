@@ -45,6 +45,9 @@ div.alertDismiss {
 div.container-top-margin {
   margin-top: 5%; }
 
+textarea {
+  resize: none; }
+
 @media screen and (max-width: 768px) {
   input.newCategoryInput {
     margin-bottom: 5px; }
