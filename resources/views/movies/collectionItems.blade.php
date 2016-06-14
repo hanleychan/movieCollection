@@ -10,7 +10,6 @@
 				({{ count($category->tvCollections) }})
 			@endif
 		</h1>
-		<p><a href="{{ url('myCollection') }}">Return to My Collection</a></p>
 		<div class="col-md-7">
 			@if(count($items) > 0)
 				<div class="list-group">
@@ -34,8 +33,11 @@
 						@endif
 					@endforeach
 				</div>
+            @else
+                <p>No items have been added to this cateogry yet.</p>
 			@endif
 			{!! $items->links() !!}
+            <p><a href="{{ url('myCollection') }}">Return to My Collection</a></p>
 		</div>	
 	    <div class="col-sm-5 hidden-xs hidden-sm">
 	        <div id="poster">
